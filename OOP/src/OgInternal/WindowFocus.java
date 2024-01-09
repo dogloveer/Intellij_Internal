@@ -17,30 +17,40 @@ public class WindowFocus extends JFrame {
     private Connection connection = null;
     JFrame frame = new JFrame();
 
+    private Controller controller;
 
-    public WindowFocus(){
+    public WindowFocus(Controller controller){
         super();
+        this.controller = controller;
         frame.setContentPane(mainPanel);
         frame.setSize(900,500);
         frame.setLocation(200,100);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setVisible(true);
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
 
+          CONFIRMButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                      FocusType focusType = getFocusType();
+                      controller.setFocusType(focusType);
+                      new WindowAddTrainer(controller);
+                      dispose();
 
-            }
-        };
-
-
-
-        aerobicsRB.addActionListener(listener);
-        bodyweightRB.addActionListener(listener);
-        crossfitRB.addActionListener(listener);
-        stretchingRB.addActionListener(listener);
-        weightRB.addActionListener(listener);
+                }
+          });
     }
+
+    private FocusType getFocusType(){
+
+          if (aerobicsRB.isSelected()) return FocusType.AEROBICS;
+          if (bodyweightRB.isSelected()) return FocusType.BODYWEIGHT;
+          if (crossfitRB.isSelected()) return FocusType.CROSSFITENER;
+          if (stretchingRB.isSelected()) return FocusType.STRETCHING;
+          if (weightRB.isSelected()) return FocusType.WEIGHT;
+          return FocusType.UNKNOWN;
+    }
+
+
 }
