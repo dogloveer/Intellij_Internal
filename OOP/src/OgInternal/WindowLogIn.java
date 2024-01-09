@@ -86,6 +86,7 @@ public class WindowLogIn extends JFrame {
       private void executeLogin(String username, String password) throws SQLException {
             ConnectionSettings settings = new ConnectionSettings();
             try {
+                  Controller controller = new Controller(settings);
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
                   System.out.println(connection);
                   PreparedStatement statement = connection.prepareStatement("SELECT username_username, username_password FROM username WHERE username_username=? AND username_password=?");
@@ -98,7 +99,7 @@ public class WindowLogIn extends JFrame {
                         user.password = resultSet.getString("username_password");
                         //PreparedStatement st = connection.prepareStatement("UPDATE user SET u_true = 't' WHERE u_username="+username);
                         JOptionPane.showMessageDialog(OKButton, "You have successfully logged in");
-                        Controller controller = new Controller(user);
+                        controller.setUser(user);
                         new WindowUserTable(controller);
                   } else {
                         JOptionPane.showMessageDialog(OKButton, "Incorrect Username or password");

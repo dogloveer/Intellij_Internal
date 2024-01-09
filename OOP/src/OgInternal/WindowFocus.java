@@ -33,7 +33,8 @@ public class WindowFocus extends JFrame {
                   public void actionPerformed(ActionEvent e) {
                         FocusType focusType = getFocusType();
                         controller.setFocusType(focusType);
-                        new WindowAddTrainer(controller); // TODO which form should pop up here? Windows Choose?
+                        //new WindowAddTrainer(controller); // TODO which form should pop up here? Windows Choose?
+                        new WindowChoose(controller);
                         dispose();
                   }
             });
