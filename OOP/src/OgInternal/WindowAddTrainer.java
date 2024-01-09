@@ -17,10 +17,19 @@ public class WindowAddTrainer extends JFrame {
       private JButton OKButton;
       private JRadioButton weightTrainingRadioButton;
       private JTextField AGETextField;
+      private JPanel mainPanel;
       private Controller controller;
+      private JFrame frame = new JFrame();
 
       public WindowAddTrainer(Controller controller) {
+            super();
             this.controller = controller;
+            frame.setContentPane(mainPanel);
+            frame.setSize(900, 500);
+            frame.setLocation(200, 100);
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setResizable(false);
+            frame.setVisible(true);
             sliderage.addMouseMotionListener(new MouseMotionAdapter() {
                   @Override
                   public void mouseDragged(MouseEvent e) {
