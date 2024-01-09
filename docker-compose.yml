@@ -17,7 +17,7 @@ services:
       - MYSQL_PASSWORD=marcin
     command: --default-authentication-plugin=mysql_native_password
 
-  phpmyadmin:
+  phpmyadmin: # you login in as root/root and server mysql
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin:latest
     restart: always
