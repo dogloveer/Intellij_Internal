@@ -34,6 +34,9 @@ public class WindowFocus extends JFrame {
 
             }
         };
+
+
+
         aerobicsRB.addActionListener(listener);
         bodyweightRB.addActionListener(listener);
         crossfitRB.addActionListener(listener);
