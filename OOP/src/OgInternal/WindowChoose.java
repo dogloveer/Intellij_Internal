@@ -1,6 +1,8 @@
 package OgInternal;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class WindowChoose extends JFrame {
       private JTable table1;
@@ -23,6 +25,9 @@ public class WindowChoose extends JFrame {
             frame.setResizable(false);
             frame.setVisible(true);
             controller.fetchTrainers();
+            // TODO - > lepsze renderowanie
+            DefaultComboBoxModel model = new DefaultComboBoxModel(controller.getTrainers().stream().toArray());
+            comboBox.setModel(model);
       }
 
 
