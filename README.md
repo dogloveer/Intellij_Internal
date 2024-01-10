@@ -22,4 +22,6 @@ ostattni slajd - co ma robic add new ?
 
 
 
+cos dopisze
+
 ```
