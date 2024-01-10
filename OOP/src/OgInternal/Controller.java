@@ -74,10 +74,7 @@ public class Controller {
                         trainers.add(trener);
                   }
                   connection.close();
-                  trainers.forEach( trener -> {
-                        System.out.println(trener);
-
-                  }  );
+                  // trainers.forEach( trener -> { System.out.println(trener);} );
             }
             catch (SQLException e) {
                   e.printStackTrace();
