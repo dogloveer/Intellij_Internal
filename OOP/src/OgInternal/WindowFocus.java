@@ -1,5 +1,7 @@
 package OgInternal;
 
+import OgInternal.model.FocusType;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

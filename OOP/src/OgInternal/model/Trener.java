@@ -1,4 +1,4 @@
-package OgInternal;
+package OgInternal.model;
 
 import java.util.Objects;
 

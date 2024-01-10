@@ -1,4 +1,4 @@
-package OgInternal;
+package OgInternal.model;
 
 public class User {
     public String name;

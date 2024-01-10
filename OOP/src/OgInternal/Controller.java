@@ -1,5 +1,9 @@
 package OgInternal;
 
+import OgInternal.model.FocusType;
+import OgInternal.model.Trener;
+import OgInternal.model.User;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
