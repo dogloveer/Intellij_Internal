@@ -16,6 +16,8 @@ public class Controller {
       private User user;
       private FocusType focusType;
 
+      private Trener selectedTrainer;
+
       public Controller(ConnectionSettings settings) {
             this.settings = settings;
       }
@@ -77,4 +79,13 @@ public class Controller {
                   e.printStackTrace();
             }
       }
+
+      public Trener getSelectedTrainer() {
+            return selectedTrainer;
+      }
+
+      public void setSelectedTrainer(Trener selectedTrainer) {
+            this.selectedTrainer = selectedTrainer;
+      }
+
 }

@@ -1,8 +1,8 @@
 package OgInternal;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class WindowChoose extends JFrame {
       private JTable table1;
@@ -28,8 +28,12 @@ public class WindowChoose extends JFrame {
             // TODO - > lepsze renderowanie
             DefaultComboBoxModel model = new DefaultComboBoxModel(controller.getTrainers().stream().toArray());
             comboBox.setModel(model);
+            CONFIRMButton.addActionListener(new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                        Trener selectedItem = (Trener) comboBox.getSelectedItem();
+                        controller.setSelectedTrainer(selectedItem);
+                  }
+            });
       }
-
-
-
 }
