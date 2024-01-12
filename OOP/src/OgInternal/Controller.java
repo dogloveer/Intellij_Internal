@@ -107,4 +107,27 @@ public class Controller {
                   e.printStackTrace();
             }
       }
+
+      public void getTrainerAndFocus() {
+
+            /*
+            try {
+                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  System.out.println(connection);
+                  PreparedStatement statement = connection.prepareStatement("SELECT u_username, u_password FROM user WHERE u_username=? AND u_password=?");
+                  statement.setString(1, username);
+                  statement.setString(2, password);
+                  ResultSet resultSet = statement.executeQuery();
+                  if (resultSet.next()) {
+                        user = new User();
+                        user.username = resultSet.getString("username_username");
+                        user.password = resultSet.getString("username_password");
+                  }
+            }
+            catch (SQLException e) {
+
+            }
+            return user;
+            */
+      }
 }
