@@ -3,7 +3,6 @@ package OgInternal;
 import OgInternal.model.FocusType;
 import OgInternal.model.Trener;
 import OgInternal.model.User;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +18,6 @@ public class Controller {
       private List<Trener> trainers = new ArrayList<>();
       private User user;
       private FocusType focusType;
-
       private Trener selectedTrainer;
 
       public Controller(ConnectionSettings settings) {
@@ -30,6 +28,7 @@ public class Controller {
             return new Controller(new ConnectionSettings());
       }
 
+      /** geters & seters*/
       public User getUser() {
             return user;
       }
@@ -54,7 +53,35 @@ public class Controller {
             this.trainers = trainers;
       }
 
-      public void fetchTrainers()  {
+      public Trener getSelectedTrainer() {
+            return selectedTrainer;
+      }
+
+      public void setSelectedTrainer(Trener selectedTrainer) {
+            this.selectedTrainer = selectedTrainer;
+      }
+      /** methods */
+      public User login(String username, String password) {
+            try {
+                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  System.out.println(connection);
+                  PreparedStatement statement = connection.prepareStatement("SELECT u_username, u_password FROM user WHERE u_username=? AND u_password=?");
+                  statement.setString(1, username);
+                  statement.setString(2, password);
+                  ResultSet resultSet = statement.executeQuery();
+                  if (resultSet.next()) {
+                        user = new User();
+                        user.username = resultSet.getString("username_username");
+                        user.password = resultSet.getString("username_password");
+                  }
+            }
+            catch (SQLException e) {
+
+            }
+            return user;
+      }
+
+      public void fetchTrainers() {
             try {
                   trainers.clear();
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
@@ -80,13 +107,4 @@ public class Controller {
                   e.printStackTrace();
             }
       }
-
-      public Trener getSelectedTrainer() {
-            return selectedTrainer;
-      }
-
-      public void setSelectedTrainer(Trener selectedTrainer) {
-            this.selectedTrainer = selectedTrainer;
-      }
-
 }
