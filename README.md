@@ -1,4 +1,7 @@
 ``` 
+WindowLogin -> WindowUserTable -> add New -> WindowFocus -> WindowChoose
+
+
 logowanie - jak nie ma zwroc wyjatek -> wyskakuje popup z informacja -> OK
 
 
