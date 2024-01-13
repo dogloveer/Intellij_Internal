@@ -20,7 +20,12 @@ SELECT t.trener_name, t.trener_surname, t.trener_id, f.focus_name, f.focus_id, f
 WHERE tf.trenertofocus_trener = t.trener_id AND tf.trenertofocus_focus = f.focus_id AND ft.focustime_id = f.focus_time and mf.materialstofocus_focus = f.focus_id and mf.materialstofocus_materials = m.materials_id 
 AND t.trener_id = 1 AND f.focus_id = 4;
 
+==========
+SELECT * from materials m, materialstofocus mf, focus f
+WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = "stretching";
 
+SELECT m.materials_name from materials m, materialstofocus mf, focus f
+WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = "stretching";
 
 rejestracja nowego uzytkownika / walidacja danyuch w UI
 admin -> haslo i login zahardkodowane?
