@@ -1,9 +1,11 @@
 package OgInternal;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.List;
 
 public class WindowUserTable extends JFrame {
 
@@ -29,6 +31,18 @@ public class WindowUserTable extends JFrame {
                         dispose();
                   }
             });
+      }
+
+      private void fillDataWithGyms(){
+            List<String> materials = controller.fetchMaterialsForSelectedFocus();
+            String col[] = {"Materials"};
+            DefaultTableModel tableModel = new DefaultTableModel(col, 0);
+            materials.forEach(
+                    item -> {
+                          tableModel.addRow(new Object[]{item});
+                    }
+            );
+            Jtable.setModel(tableModel);
       }
 
       public static void main(String[] args) {
