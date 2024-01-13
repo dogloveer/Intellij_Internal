@@ -54,6 +54,7 @@ public class WindowSummary extends JFrame {
             OKButton.addActionListener(new ActionListener() {
                   @Override
                   public void actionPerformed(ActionEvent e) {
+                        controller.saveGym();
                         new WindowUserTable(controller);
                         dispose();
                   }

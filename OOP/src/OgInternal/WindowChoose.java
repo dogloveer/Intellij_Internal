@@ -26,8 +26,7 @@ public class WindowChoose extends JFrame {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setResizable(false);
             frame.setVisible(true);
-            controller.fetchTrainers();
-            // TODO - > lepsze renderowanie
+            controller.fetchTrainersForSelectedFocus();
             DefaultComboBoxModel model = new DefaultComboBoxModel(controller.getTrainers().stream().toArray());
             comboBox.setModel(model);
             CONFIRMButton.addActionListener(new ActionListener() {

@@ -20,9 +20,11 @@ public class Controller {
       private User user;
       private FocusType selectedFocusType;
       private Trener selectedTrainer;
+
       public Controller(ConnectionSettings settings) {
             this.settings = settings;
       }
+
       public static Controller empty() {
             return new Controller(new ConnectionSettings());
       }
@@ -33,6 +35,7 @@ public class Controller {
       public User getUser() {
             return user;
       }
+
       public void setUser(User user) {
             this.user = user;
       }
@@ -40,6 +43,7 @@ public class Controller {
       public FocusType getSelectedFocusType() {
             return selectedFocusType;
       }
+
       public void setSelectedFocusType(FocusType selectedFocusType) {
             this.selectedFocusType = selectedFocusType;
       }
@@ -47,6 +51,7 @@ public class Controller {
       public List<Trener> getTrainers() {
             return trainers;
       }
+
       public void setTrainers(List<Trener> trainers) {
             this.trainers = trainers;
       }
@@ -54,6 +59,7 @@ public class Controller {
       public Trener getSelectedTrainer() {
             return selectedTrainer;
       }
+
       public void setSelectedTrainer(Trener selectedTrainer) {
             this.selectedTrainer = selectedTrainer;
       }
@@ -63,16 +69,16 @@ public class Controller {
        */
       public User login(String username, String password) {
             try {
-                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-                  System.out.println(connection);
-                  PreparedStatement statement = connection.prepareStatement("SELECT u_username, u_password FROM user WHERE u_username=? AND u_password=?");
+                  connection = getConnection();
+                  PreparedStatement statement = connection.prepareStatement("SELECT u_id, u_username, u_password FROM user WHERE u_username=? AND u_password=?");
                   statement.setString(1, username);
                   statement.setString(2, password);
                   ResultSet resultSet = statement.executeQuery();
                   if (resultSet.next()) {
                         user = new User();
-                        user.username = resultSet.getString("username_username");
-                        user.password = resultSet.getString("username_password");
+                        user.id = resultSet.getInt("u_id");
+                        user.username = resultSet.getString("u_username");
+                        user.password = resultSet.getString("u_password");
                   }
             }
             catch (SQLException e) {
@@ -88,15 +94,15 @@ public class Controller {
             return user;
       }
 
-      public void fetchTrainers() {
+      public void fetchTrainersForSelectedFocus() {
             try {
                   String selectedFocusValue = this.selectedFocusType.value;
                   trainers.clear();
-                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  connection = getConnection();
                   PreparedStatement statement = connection.prepareStatement("SELECT t.trener_id, t.trener_name, t.trener_surname, t.trener_age FROM trener t, focus f, trenertofocus tf where tf.trenertofocus_trener = t.trener_id and f.focus_id = tf.trenertofocus_focus and f.focus_name = ? order by t.trener_id asc;");
                   statement.setString(1, selectedFocusValue);
                   ResultSet resultSet = statement.executeQuery();
-                  while (resultSet.next()) {
+                  while (resultSet.next()) { // relacja x:y
                         int id = resultSet.getInt("trener_id");
                         String name = resultSet.getString("trener_name");
                         String surName = resultSet.getString("trener_surname");
@@ -125,12 +131,12 @@ public class Controller {
       public List<String> fetchMaterialsForSelectedFocus() {
             List<String> materials = new ArrayList<>();
             try {
-                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  connection = getConnection();
                   PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
                   String selectedFocusValue = this.selectedFocusType.value;
                   statement.setString(1, selectedFocusValue);
                   ResultSet resultSet = statement.executeQuery();
-                  while (resultSet.next()) {
+                  while (resultSet.next()) { // relacja x:y
                         String receivedValue = resultSet.getString("materials_name");
                         materials.add(receivedValue);
                   }
@@ -151,13 +157,12 @@ public class Controller {
 
       public int getFocusTimeForSelectedFocus() {
             try {
-                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-                  System.out.println(connection);
+                  connection = getConnection();
                   PreparedStatement statement = connection.prepareStatement("SELECT * FROM focus f, focustime ft  where f.focus_time = ft.focustime_id and f.focus_name = ?");
-                  String focuseName = this.selectedFocusType.value;
-                  statement.setString(1, focuseName);
+                  String focusName = this.selectedFocusType.value;
+                  statement.setString(1, focusName);
                   ResultSet resultSet = statement.executeQuery();
-                  if (resultSet.next()) {
+                  if (resultSet.next()) { // jest tylko relacja 1: n stad musi byc tylko 1 rezultat
                         return resultSet.getInt("focustime_time");
                   }
             }
@@ -173,5 +178,36 @@ public class Controller {
                   }
             }
             return 0;
+      }
+
+      public void saveGym() {
+            int trainerId = this.selectedTrainer.getId();
+            int userId = this.user.id;
+
+            try {
+                  String SQL_INSERT = "INSERT INTO gym (gym_trener_id, gym_focus_id,gym_user_id) VALUES (?,?,?)";
+                  connection = getConnection();
+                  PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
+                  preparedStatement.setInt(1, trainerId);
+                  preparedStatement.setInt(2, 2);
+                  preparedStatement.setInt(3, userId);
+                  int row = preparedStatement.executeUpdate();
+                  System.out.print("Wpisano :" + row);
+            }
+            catch (SQLException e) {
+                  System.out.print("Wpisano :" + e);
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
+            }
+      }
+
+      private Connection getConnection() throws SQLException {
+            return DriverManager.getConnection(settings.url, settings.user, settings.pwd);
       }
 }
