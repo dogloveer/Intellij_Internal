@@ -1,5 +1,7 @@
 package OgInternal;
 
+import OgInternal.model.GymView;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -24,6 +26,7 @@ public class WindowUserTable extends JFrame {
             setLocation(200, 100);
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             setVisible(true);
+            fillDataWithGyms();
             ADDNEWButton.addActionListener(new ActionListener() {
                   @Override
                   public void actionPerformed(ActionEvent e) {
@@ -34,12 +37,12 @@ public class WindowUserTable extends JFrame {
       }
 
       private void fillDataWithGyms(){
-            List<String> materials = controller.fetchMaterialsForSelectedFocus();
-            String col[] = {"Materials"};
+            List<GymView> gymViews = controller.getGymViews();
+            String col[] = {"Focus", "Trener Imie", "Trener Nazwisko", "Czas trwania"};
             DefaultTableModel tableModel = new DefaultTableModel(col, 0);
-            materials.forEach(
+            gymViews.forEach(
                     item -> {
-                          tableModel.addRow(new Object[]{item});
+                          tableModel.addRow(new Object[]{item.focusName, item.trainerName, item.trainerSurname, item.focusTime});
                     }
             );
             Jtable.setModel(tableModel);

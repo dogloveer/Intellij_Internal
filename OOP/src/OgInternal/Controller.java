@@ -1,6 +1,7 @@
 package OgInternal;
 
 import OgInternal.model.FocusType;
+import OgInternal.model.GymView;
 import OgInternal.model.Trener;
 import OgInternal.model.User;
 
@@ -189,6 +190,7 @@ public class Controller {
                   connection = getConnection();
                   PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
                   preparedStatement.setInt(1, trainerId);
+                  // TODO
                   preparedStatement.setInt(2, 2);
                   preparedStatement.setInt(3, userId);
                   int row = preparedStatement.executeUpdate();
@@ -207,17 +209,20 @@ public class Controller {
             }
       }
 
-      public List<String> getGyms() {
-            List<String> materials = new ArrayList<>();
+      public List<GymView> getGymViews() {
+            List<GymView> gymViews = new ArrayList<>();
             try {
                   connection = getConnection();
-                  PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
-                  String selectedFocusValue = this.selectedFocusType.value;
-                  statement.setString(1, selectedFocusValue);
+                  PreparedStatement statement = connection.prepareStatement("SELECT focus.focus_name, trener.trener_name, trener.trener_surname, focustime.focustime_time FROM focus JOIN gym ON focus.focus_id = gym.gym_focus_id JOIN trener ON gym.gym_trener_id = trener.trener_id JOIN focustime ON focustime.focustime_id = focus.focus_time WHERE gym.gym_user_id = ?");
+                  statement.setInt(1, this.user.id);
                   ResultSet resultSet = statement.executeQuery();
                   while (resultSet.next()) { // relacja x:y
-                        String receivedValue = resultSet.getString("materials_name");
-                        materials.add(receivedValue);
+                        String focusName = resultSet.getString("focus.focus_name");
+                        String trainerName = resultSet.getString("trener.trener_name");
+                        String trainerSurName = resultSet.getString("trener.trener_surname");
+                        int focusTime = resultSet.getInt("focustime.focustime_time");
+                        GymView gymView = new GymView(focusName,trainerName,trainerSurName,focusTime);
+                        gymViews.add(gymView);
                   }
             }
             catch (SQLException e) {
@@ -231,7 +236,7 @@ public class Controller {
                         e.printStackTrace();
                   }
             }
-            return materials;
+            return gymViews;
       }
 
 
