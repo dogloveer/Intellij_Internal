@@ -186,3 +186,6 @@ CREATE TABLE IF NOT EXISTS `gym` (
     CONSTRAINT `FK_gym_focus_id` FOREIGN KEY (`gym_focus_id`) REFERENCES `focus` (`focus_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `FK_gym_user_id` FOREIGN KEY (`gym_user_id`) REFERENCES `trener` (`trener_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `gym` (`gym_id`, `gym_trener_id`, `gym_focus_id`, `gym_user_id`) VALUES
+(1, 4,2,1)
