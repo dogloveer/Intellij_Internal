@@ -90,10 +90,11 @@ public class Controller {
 
       public void fetchTrainers() {
             try {
+                  String selectedFocusValue = this.selectedFocusType.value;
                   trainers.clear();
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-                  System.out.println(connection);
-                  PreparedStatement statement = connection.prepareStatement("SELECT trener_id, trener_name, trener_surname, trener_age FROM trener order by trener_id asc ");
+                  PreparedStatement statement = connection.prepareStatement("SELECT t.trener_id, t.trener_name, t.trener_surname, t.trener_age FROM trener t, focus f, trenertofocus tf where tf.trenertofocus_trener = t.trener_id and f.focus_id = tf.trenertofocus_focus and f.focus_name = ? order by t.trener_id asc;");
+                  statement.setString(1, selectedFocusValue);
                   ResultSet resultSet = statement.executeQuery();
                   while (resultSet.next()) {
                         int id = resultSet.getInt("trener_id");
@@ -125,10 +126,9 @@ public class Controller {
             List<String> materials = new ArrayList<>();
             try {
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-                  System.out.println(connection);
                   PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
-                  String focuseName = this.selectedFocusType.value;
-                  statement.setString(1, focuseName);
+                  String selectedFocusValue = this.selectedFocusType.value;
+                  statement.setString(1, selectedFocusValue);
                   ResultSet resultSet = statement.executeQuery();
                   while (resultSet.next()) {
                         String receivedValue = resultSet.getString("materials_name");
