@@ -207,6 +207,34 @@ public class Controller {
             }
       }
 
+      public List<String> getGyms() {
+            List<String> materials = new ArrayList<>();
+            try {
+                  connection = getConnection();
+                  PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
+                  String selectedFocusValue = this.selectedFocusType.value;
+                  statement.setString(1, selectedFocusValue);
+                  ResultSet resultSet = statement.executeQuery();
+                  while (resultSet.next()) { // relacja x:y
+                        String receivedValue = resultSet.getString("materials_name");
+                        materials.add(receivedValue);
+                  }
+            }
+            catch (SQLException e) {
+                  return List.of();
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
+            }
+            return materials;
+      }
+
+
       private Connection getConnection() throws SQLException {
             return DriverManager.getConnection(settings.url, settings.user, settings.pwd);
       }
