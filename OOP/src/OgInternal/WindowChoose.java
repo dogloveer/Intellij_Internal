@@ -35,6 +35,8 @@ public class WindowChoose extends JFrame {
                   public void actionPerformed(ActionEvent e) {
                         Trener selectedItem = (Trener) comboBox.getSelectedItem();
                         controller.setSelectedTrainer(selectedItem);
+                        new WindowSummary(controller);
+                        dispose();
                   }
             });
       }

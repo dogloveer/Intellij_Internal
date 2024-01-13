@@ -9,7 +9,7 @@ public class Trener {
       private int age;
       private int id;
 
-      public Trener(){
+      public Trener() {
       }
 
       public int getId() {
@@ -59,11 +59,6 @@ public class Trener {
 
       @Override
       public String toString() {
-            return "Trener{" +
-                    "name='" + name + '\'' +
-                    ", surname='" + surname + '\'' +
-                    ", age=" + age +
-                    ", id=" + id +
-                    '}';
+            return name + " " + surname;
       }
 }

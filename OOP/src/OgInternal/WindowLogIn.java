@@ -6,9 +6,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class WindowLogIn extends JFrame {
@@ -21,8 +18,8 @@ public class WindowLogIn extends JFrame {
       private JPasswordField PASSWORDField;
       private Connection connection = null;
       JFrame frame = new JFrame();
-
-      private User user;
+      private ConnectionSettings settings = new ConnectionSettings();
+      private Controller controller = new Controller(settings);
 
       public WindowLogIn() {
             super();
@@ -60,8 +57,7 @@ public class WindowLogIn extends JFrame {
                         if (USERNAMETextField.getText().isEmpty() || PASSWORDField.getText().isEmpty()) {
                               new WindowErrorEmpty();
                               dispose();
-                        } //else
-                              //new WindowChoose();
+                        }
                         String username = USERNAMETextField.getText();
                         String password = String.valueOf(PASSWORDField.getPassword());
                         try {
@@ -83,39 +79,13 @@ public class WindowLogIn extends JFrame {
 
       }
 
-
-
       private void executeLogin(String username, String password) throws SQLException {
-            ConnectionSettings settings = new ConnectionSettings();
-            try {
-                  Controller controller = new Controller(settings);
-                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-                  System.out.println(connection);
-                  PreparedStatement statement = connection.prepareStatement("SELECT username_username, username_password FROM username WHERE username_username=? AND username_password=?");
-                  statement.setString(1, username);
-                  statement.setString(2, password);
-                  ResultSet resultSet = statement.executeQuery();
-                  if (resultSet.next()) {
-                        user = new User();
-                        user.username = resultSet.getString("username_username");
-                        user.password = resultSet.getString("username_password");
-                        //PreparedStatement st = connection.prepareStatement("UPDATE user SET u_true = 't' WHERE u_username="+username);
-                        JOptionPane.showMessageDialog(OKButton, "You have successfully logged in");
-                        controller.setUser(user);
-                        new WindowUserTable(controller);
-                  } else {
-                        JOptionPane.showMessageDialog(OKButton, "Incorrect Username or password");
-                  }
-                  statement.close();
-
+            User user = controller.login(username, password);
+            if (user != null) {
+                  new WindowUserTable(controller);
+            } else {
+                  JOptionPane.showMessageDialog(OKButton, "Incorrect Username or password");
             }
-            catch (SQLException throwables) {
-                  throwables.printStackTrace();
-            }
-            finally {
-                  connection.close();
-            }
-
       }
 }
 

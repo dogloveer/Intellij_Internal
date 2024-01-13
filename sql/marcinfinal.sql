@@ -147,25 +147,25 @@ INSERT INTO `trenertofocus` (`trenertofocus_id`, `trenertofocus_trener`, `trener
 	(14, 7, 1),
 	(16, 7, 2);
 
--- Zrzut struktury tabela oginternal.username
-CREATE TABLE IF NOT EXISTS `username` (
-  `username_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username_name` varchar(50) NOT NULL,
-  `username_surname` varchar(50) NOT NULL,
-  `username_focus` int(11) DEFAULT 0,
-  `username_email` varchar(50) NOT NULL,
-  `username_username` varchar(50) NOT NULL,
-  `username_password` varchar(50) NOT NULL,
-  `username_age` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`username_id`),
-  KEY `username_focus` (`username_focus`),
-  CONSTRAINT `FK__focus` FOREIGN KEY (`username_focus`) REFERENCES `focus` (`focus_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+-- Zrzut struktury tabela oginternal.user
+CREATE TABLE IF NOT EXISTS `user` (
+  `u_id` int(11) NOT NULL AUTO_INCREMENT,
+  `u_name` varchar(50) NOT NULL,
+  `u_surname` varchar(50) NOT NULL,
+  `u_email` varchar(50) NOT NULL,
+  `u_username` varchar(50) NOT NULL,
+  `u_password` varchar(50) NOT NULL,
+  `u_age` int(11) NOT NULL,
+  `u_focus` int(11) DEFAULT NULL,
+  PRIMARY KEY (`u_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- Zrzucanie danych dla tabeli oginternal.username: ~2 rows (około)
-INSERT INTO `username` (`username_id`, `username_name`, `username_surname`, `username_focus`, `username_email`, `username_username`, `username_password`, `username_age`) VALUES
-	(1, 'Ala', 'Drozdz', 5, 'ala@gmail.com', 'alade', '1', 18),
-	(2, 'Natalia', 'Buczak', 1, 'n@n.pl', 'nb', '2', 20);
+-- Zrzucanie danych dla tabeli oginternal.user: ~4 rows (około)
+INSERT INTO `user` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_username`, `u_password`, `u_age`, `u_focus`) VALUES
+	(1, 'Ala', 'Drozdz', 'alade@gmail.com', 'alade', '1', 18, NULL),
+	(2, 'Natalia', 'Buczak', 'n@n.pl', 'nb', 'nb123', 70, NULL),
+	(3, 'Janek', 'G', 'jg@j.g', 'jg', 'jg1', 17, NULL),
+	(4, 'Jagoda', 'j', 'j@j', 'jj', 'jjjjj', 23, NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

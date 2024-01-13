@@ -18,43 +18,77 @@ public class Controller {
       private ConnectionSettings settings;
       private List<Trener> trainers = new ArrayList<>();
       private User user;
-      private FocusType focusType;
-
+      private FocusType selectedFocusType;
       private Trener selectedTrainer;
-
       public Controller(ConnectionSettings settings) {
             this.settings = settings;
       }
-
       public static Controller empty() {
             return new Controller(new ConnectionSettings());
       }
 
+      /**
+       * geters & seters
+       */
       public User getUser() {
             return user;
       }
-
       public void setUser(User user) {
             this.user = user;
       }
 
-      public FocusType getFocusType() {
-            return focusType;
+      public FocusType getSelectedFocusType() {
+            return selectedFocusType;
       }
-
-      public void setFocusType(FocusType focusType) {
-            this.focusType = focusType;
+      public void setSelectedFocusType(FocusType selectedFocusType) {
+            this.selectedFocusType = selectedFocusType;
       }
 
       public List<Trener> getTrainers() {
             return trainers;
       }
-
       public void setTrainers(List<Trener> trainers) {
             this.trainers = trainers;
       }
 
-      public void fetchTrainers()  {
+      public Trener getSelectedTrainer() {
+            return selectedTrainer;
+      }
+      public void setSelectedTrainer(Trener selectedTrainer) {
+            this.selectedTrainer = selectedTrainer;
+      }
+
+      /**
+       * methods
+       */
+      public User login(String username, String password) {
+            try {
+                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  System.out.println(connection);
+                  PreparedStatement statement = connection.prepareStatement("SELECT u_username, u_password FROM user WHERE u_username=? AND u_password=?");
+                  statement.setString(1, username);
+                  statement.setString(2, password);
+                  ResultSet resultSet = statement.executeQuery();
+                  if (resultSet.next()) {
+                        user = new User();
+                        user.username = resultSet.getString("username_username");
+                        user.password = resultSet.getString("username_password");
+                  }
+            }
+            catch (SQLException e) {
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
+            }
+            return user;
+      }
+
+      public void fetchTrainers() {
             try {
                   trainers.clear();
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
@@ -73,20 +107,71 @@ public class Controller {
                         trener.setAge(age);
                         trainers.add(trener);
                   }
-                  connection.close();
                   // trainers.forEach( trener -> { System.out.println(trener);} );
             }
             catch (SQLException e) {
-                  e.printStackTrace();
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
             }
       }
 
-      public Trener getSelectedTrainer() {
-            return selectedTrainer;
+      public List<String> fetchMaterialsForSelectedFocus() {
+            List<String> materials = new ArrayList<>();
+            try {
+                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  System.out.println(connection);
+                  PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
+                  String focuseName = this.selectedFocusType.value;
+                  statement.setString(1, focuseName);
+                  ResultSet resultSet = statement.executeQuery();
+                  while (resultSet.next()) {
+                        String receivedValue = resultSet.getString("materials_name");
+                        materials.add(receivedValue);
+                  }
+            }
+            catch (SQLException e) {
+                  return List.of();
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
+            }
+            return materials;
       }
 
-      public void setSelectedTrainer(Trener selectedTrainer) {
-            this.selectedTrainer = selectedTrainer;
+      public int getFocusTimeForSelectedFocus() {
+            try {
+                  connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
+                  System.out.println(connection);
+                  PreparedStatement statement = connection.prepareStatement("SELECT * FROM focus f, focustime ft  where f.focus_time = ft.focustime_id and f.focus_name = ?");
+                  String focuseName = this.selectedFocusType.value;
+                  statement.setString(1, focuseName);
+                  ResultSet resultSet = statement.executeQuery();
+                  if (resultSet.next()) {
+                        return resultSet.getInt("focustime_time");
+                  }
+            }
+            catch (SQLException e) {
+                  return 0;
+            }
+            finally {
+                  try {
+                        connection.close();
+                  }
+                  catch (SQLException e) {
+                        e.printStackTrace();
+                  }
+            }
+            return 0;
       }
-
 }
