@@ -172,3 +172,17 @@ INSERT INTO `user` (`u_id`, `u_name`, `u_surname`, `u_email`, `u_username`, `u_p
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
+CREATE TABLE IF NOT EXISTS `gym` (
+    `gym_id` int(11) NOT NULL AUTO_INCREMENT,
+    `gym_trener_id` int(11) NOT NULL,
+    `gym_focus_id` int(11) NOT NULL,
+    `gym_user_id` int(11) NOT NULL,
+    PRIMARY KEY (`gym_id`),
+    KEY `gym_trener_id` (`gym_trener_id`),
+    KEY `gym_focus_id` (`gym_focus_id`),
+    KEY `gym_user_id` (`gym_user_id`),
+    CONSTRAINT `FK_gym_trener_id` FOREIGN KEY (`gym_trener_id`) REFERENCES `trener` (`trener_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `FK_gym_focus_id` FOREIGN KEY (`gym_focus_id`) REFERENCES `focus` (`focus_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `FK_gym_user_id` FOREIGN KEY (`gym_user_id`) REFERENCES `trener` (`trener_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
