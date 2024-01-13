@@ -4,6 +4,8 @@ import OgInternal.model.Trener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class WindowSummary extends JFrame {
@@ -26,26 +28,35 @@ public class WindowSummary extends JFrame {
             frame.setVisible(true);
             setupLabels();
             loadTableData();
-
+            addListenerToOKButton();
       }
 
-      private void setupLabels(){
-            TrainingType.setText( controller.getSelectedFocusType().value );
-            TrainingTime.setText( String.valueOf(controller.getFocusTimeForSelectedFocus()) );
+      private void setupLabels() {
+            TrainingType.setText(controller.getSelectedFocusType().value);
+            TrainingTime.setText(String.valueOf(controller.getFocusTimeForSelectedFocus()));
             Trener trener = controller.getSelectedTrainer();
-            TrainingTrainer.setText( trener.getName() + " "+ trener.getSurname());
+            TrainingTrainer.setText(trener.getName() + " " + trener.getSurname());
       }
 
-      private void loadTableData(){
+      private void loadTableData() {
             List<String> materials = controller.fetchMaterialsForSelectedFocus();
             String col[] = {"Materials"};
             DefaultTableModel tableModel = new DefaultTableModel(col, 0);
             materials.forEach(
                     item -> {
-                          tableModel.addRow( new Object[] {item} );
+                          tableModel.addRow(new Object[]{item});
                     }
             );
-            materialsTable.setModel( tableModel);
+            materialsTable.setModel(tableModel);
       }
 
+      private void addListenerToOKButton() {
+            OKButton.addActionListener(new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                        new WindowUserTable(controller);
+                        dispose();
+                  }
+            });
+      }
 }

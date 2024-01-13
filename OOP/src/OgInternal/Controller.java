@@ -3,6 +3,7 @@ package OgInternal;
 import OgInternal.model.FocusType;
 import OgInternal.model.Trener;
 import OgInternal.model.User;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,20 +20,19 @@ public class Controller {
       private User user;
       private FocusType selectedFocusType;
       private Trener selectedTrainer;
-
       public Controller(ConnectionSettings settings) {
             this.settings = settings;
       }
-
       public static Controller empty() {
             return new Controller(new ConnectionSettings());
       }
 
-      /** geters & seters*/
+      /**
+       * geters & seters
+       */
       public User getUser() {
             return user;
       }
-
       public void setUser(User user) {
             this.user = user;
       }
@@ -40,7 +40,6 @@ public class Controller {
       public FocusType getSelectedFocusType() {
             return selectedFocusType;
       }
-
       public void setSelectedFocusType(FocusType selectedFocusType) {
             this.selectedFocusType = selectedFocusType;
       }
@@ -48,7 +47,6 @@ public class Controller {
       public List<Trener> getTrainers() {
             return trainers;
       }
-
       public void setTrainers(List<Trener> trainers) {
             this.trainers = trainers;
       }
@@ -56,11 +54,13 @@ public class Controller {
       public Trener getSelectedTrainer() {
             return selectedTrainer;
       }
-
       public void setSelectedTrainer(Trener selectedTrainer) {
             this.selectedTrainer = selectedTrainer;
       }
-      /** methods */
+
+      /**
+       * methods
+       */
       public User login(String username, String password) {
             try {
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
@@ -76,7 +76,6 @@ public class Controller {
                   }
             }
             catch (SQLException e) {
-
             }
             finally {
                   try {
@@ -122,14 +121,14 @@ public class Controller {
             }
       }
 
-      public List<String> fetchMaterialsForSelectedFocus()  {
+      public List<String> fetchMaterialsForSelectedFocus() {
             List<String> materials = new ArrayList<>();
             try {
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
                   System.out.println(connection);
                   PreparedStatement statement = connection.prepareStatement("SELECT m.materials_name from materials m, materialstofocus mf, focus f WHERE mf.materialstofocus_materials = m.materials_id and mf.materialstofocus_focus = f.focus_id and f.focus_name = ?");
                   String focuseName = this.selectedFocusType.value;
-                  statement.setString(1,focuseName );
+                  statement.setString(1, focuseName);
                   ResultSet resultSet = statement.executeQuery();
                   while (resultSet.next()) {
                         String receivedValue = resultSet.getString("materials_name");
@@ -150,7 +149,7 @@ public class Controller {
             return materials;
       }
 
-      public int getFocusTimeForSelectedFocus(){
+      public int getFocusTimeForSelectedFocus() {
             try {
                   connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
                   System.out.println(connection);
@@ -159,7 +158,7 @@ public class Controller {
                   statement.setString(1, focuseName);
                   ResultSet resultSet = statement.executeQuery();
                   if (resultSet.next()) {
-                        return  resultSet.getInt("focustime_time");
+                        return resultSet.getInt("focustime_time");
                   }
             }
             catch (SQLException e) {
