@@ -7,8 +7,3 @@ logowanie - jak nie ma zwroc wyjatek -> wyskakuje popup z informacja -> OK
 
 trenerzy i ich zajecia predefiniowani w bazie danych -> pomyslec nad wprowadzaniem z UI
 ```
-
-``` 
-TODO
-fix - okna sie nie zamykaja - dodawanie nowego focus'a i odswiezanie brakuje
-```
