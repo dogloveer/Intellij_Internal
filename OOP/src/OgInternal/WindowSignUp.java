@@ -157,7 +157,7 @@ public class WindowSignUp extends JFrame {
         ConnectionSettings settings = new ConnectionSettings();
         try {
             connection = DriverManager.getConnection(settings.url, settings.user, settings.pwd);
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO user (u_name, u_surname, u_email, u_username, u_password, u_age,u_true) VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO user (u_name, u_surname, u_email, u_username, u_password, u_age) VALUES (?,?,?,?,?,?)");
             statement.setString(1, name);
             statement.setString(2, surname);
             statement.setString(3, email);

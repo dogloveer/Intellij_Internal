@@ -4,6 +4,7 @@ import OgInternal.model.GymView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -14,9 +15,7 @@ public class WindowUserTable extends JFrame {
       private JTable Jtable;
       private JButton ADDNEWButton;
       private JPanel mainPanel;
-
       private Connection connection = null;
-
       private Controller controller;
 
       public WindowUserTable(Controller controller) {
@@ -36,7 +35,7 @@ public class WindowUserTable extends JFrame {
             });
       }
 
-      private void fillDataWithGyms(){
+      private void fillDataWithGyms() {
             List<GymView> gymViews = controller.getGymViews();
             String col[] = {"Focus", "Trener Imie", "Trener Nazwisko", "Czas trwania"};
             DefaultTableModel tableModel = new DefaultTableModel(col, 0);
@@ -46,6 +45,7 @@ public class WindowUserTable extends JFrame {
                     }
             );
             Jtable.setModel(tableModel);
+            Jtable.setBackground(Color.GREEN);
       }
 
       public static void main(String[] args) {
