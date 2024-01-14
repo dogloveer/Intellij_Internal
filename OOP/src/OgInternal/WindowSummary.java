@@ -55,8 +55,8 @@ public class WindowSummary extends JFrame {
                   @Override
                   public void actionPerformed(ActionEvent e) {
                         controller.saveGym();
-                        new WindowUserTable(controller);
                         dispose();
+                        new WindowUserTable(controller);
                   }
             });
       }

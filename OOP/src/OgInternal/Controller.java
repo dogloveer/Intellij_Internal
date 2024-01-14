@@ -184,14 +184,17 @@ public class Controller {
       public void saveGym() {
             int trainerId = this.selectedTrainer.getId();
             int userId = this.user.id;
-            int focusId = this.selectedFocusType.ordinal();
+            int focusId = this.selectedFocusType.ordinal()+1;// bo enum enumuruje sie od 0 !
 
             try {
                   String SQL_INSERT = "INSERT INTO gym (gym_trener_id, gym_focus_id,gym_user_id) VALUES (?,?,?)";
                   connection = getConnection();
+                  System.out.println("Insert into GYM");
+                  System.out.println("trainerId: "+ trainerId);
+                  System.out.println("userId: "+ userId);
+                  System.out.println("focusId: "+ focusId);
                   PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
                   preparedStatement.setInt(1, trainerId);
-                  // TODO
                   preparedStatement.setInt(2, focusId);
                   preparedStatement.setInt(3, userId);
                   int row = preparedStatement.executeUpdate();
