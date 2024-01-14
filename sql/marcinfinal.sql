@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `focus` (
   CONSTRAINT `FK_focus_focustime` FOREIGN KEY (`focus_time`) REFERENCES `focustime` (`focustime_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
--- Zrzucanie danych dla tabeli oginternal.focus: ~5 rows (około)
+-- Zrzucanie danych dla tabeli oginternal.focus: ~5 rows (około) - ma odpowiadac temu co jest w FocusType, bo na UI jest zahardcodowane
 INSERT INTO `focus` (`focus_id`, `focus_name`, `focus_time`) VALUES
 	(1, 'aerobics', 2),
 	(2, 'bodyweight excercises', 3),
@@ -186,3 +186,6 @@ CREATE TABLE IF NOT EXISTS `gym` (
     CONSTRAINT `FK_gym_focus_id` FOREIGN KEY (`gym_focus_id`) REFERENCES `focus` (`focus_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `FK_gym_user_id` FOREIGN KEY (`gym_user_id`) REFERENCES `trener` (`trener_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `gym` (`gym_id`, `gym_trener_id`, `gym_focus_id`, `gym_user_id`) VALUES
+(1, 4,2,1)
