@@ -184,6 +184,7 @@ public class Controller {
       public void saveGym() {
             int trainerId = this.selectedTrainer.getId();
             int userId = this.user.id;
+            int focusId = this.selectedFocusType.ordinal();
 
             try {
                   String SQL_INSERT = "INSERT INTO gym (gym_trener_id, gym_focus_id,gym_user_id) VALUES (?,?,?)";
@@ -191,7 +192,7 @@ public class Controller {
                   PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
                   preparedStatement.setInt(1, trainerId);
                   // TODO
-                  preparedStatement.setInt(2, 2);
+                  preparedStatement.setInt(2, focusId);
                   preparedStatement.setInt(3, userId);
                   int row = preparedStatement.executeUpdate();
                   System.out.print("Wpisano :" + row);
