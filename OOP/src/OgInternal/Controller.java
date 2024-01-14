@@ -33,13 +33,6 @@ public class Controller {
       /**
        * geters & seters
        */
-      public User getUser() {
-            return user;
-      }
-
-      public void setUser(User user) {
-            this.user = user;
-      }
 
       public FocusType getSelectedFocusType() {
             return selectedFocusType;
@@ -51,10 +44,6 @@ public class Controller {
 
       public List<Trener> getTrainers() {
             return trainers;
-      }
-
-      public void setTrainers(List<Trener> trainers) {
-            this.trainers = trainers;
       }
 
       public Trener getSelectedTrainer() {
@@ -184,15 +173,15 @@ public class Controller {
       public void saveGym() {
             int trainerId = this.selectedTrainer.getId();
             int userId = this.user.id;
-            int focusId = this.selectedFocusType.ordinal()+1;// bo enum enumuruje sie od 0 !
+            int focusId = this.selectedFocusType.ordinal() + 1;// bo enum enumuruje sie od 0 !
 
             try {
                   String SQL_INSERT = "INSERT INTO gym (gym_trener_id, gym_focus_id,gym_user_id) VALUES (?,?,?)";
                   connection = getConnection();
                   System.out.println("Insert into GYM");
-                  System.out.println("trainerId: "+ trainerId);
-                  System.out.println("userId: "+ userId);
-                  System.out.println("focusId: "+ focusId);
+                  System.out.println("trainerId: " + trainerId);
+                  System.out.println("userId: " + userId);
+                  System.out.println("focusId: " + focusId);
                   PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT);
                   preparedStatement.setInt(1, trainerId);
                   preparedStatement.setInt(2, focusId);
@@ -225,7 +214,7 @@ public class Controller {
                         String trainerName = resultSet.getString("trener.trener_name");
                         String trainerSurName = resultSet.getString("trener.trener_surname");
                         int focusTime = resultSet.getInt("focustime.focustime_time");
-                        GymView gymView = new GymView(focusName,trainerName,trainerSurName,focusTime);
+                        GymView gymView = new GymView(focusName, trainerName, trainerSurName, focusTime);
                         gymViews.add(gymView);
                   }
             }
